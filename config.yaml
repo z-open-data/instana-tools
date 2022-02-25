@@ -1,0 +1,42 @@
+products:
+  km5:
+    sensor_type: os
+    entity_type: mvs
+    hostname: smf_id
+    tables:
+      syscpuutil:
+        description: System_CPU_Utilization
+        fields:
+          - average_cpu_percent
+          - undispatched_tasks
+          - mvs_overhead
+          - physical_cpu_count
+          - wlm_mode
+          - average_ifa_percent
+          - average_ifa_on_cp_percent
+          - four_hour_msus
+          - average_ziip_percent
+          - average_ziip_on_cp_percent
+          - hiperdispatch_management
+          - percent_lpar_msu_capacity
+          - average_unused_group_msus
+          - sysplex_name
+          - smf_id
+          - managed_system
+          - write_time
+          - product_code
+          - table_name
+          - interval_seconds
+  kd5:
+    sensor_type: db2
+    entity_type: db2
+    hostname: mvs_system
+    tables:
+      dp_sy_exc:
+        description: DB2_System_States
+      opersys:
+        description: ZOS_System_Statistics
+      db2lkconf:
+        description: Local_DB2_Lock_Conflict
+      dp_srm_sub:
+        description: DB2_SRM_Subsystem
