@@ -13,8 +13,8 @@ optional arguments:
   --config CONFIG       The config file name
   --port PORT           The server port
   --target-hostname TARGET_HOSTNAME
-                        The server hostname
+                        The target hostname
   --target-port TARGET_PORT
-                        The server port
+                        The target port
   --verbose             Print verbose output
 ```
