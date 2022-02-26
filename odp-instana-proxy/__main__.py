@@ -4,7 +4,7 @@ import json
 import yaml
 import threading
 
-config = None
+config = {}
 
 
 def is_supported(product_code, table_name):
@@ -18,11 +18,11 @@ def make_instana_payload(payload, verbose):
     table_name = odi['table_name']
     if not is_supported(product_code, table_name):
         return None
-    sysplex_name = odi.get('sysplex_name') or "**UNKNOWN**"
     product = config['products'][product_code]
     table = product['tables'][table_name]
     sensor_type = product['sensor_type']
     entity_type = product['entity_type']
+    availability_zone = odi.get(product.get('availability_zone')) or "**UNKNOWN**"
     sensor_name = "com.instana.plugin.ibmz." + sensor_type
     host_id = odi[product['hostname']].lower()
     entity_id = entity_type + '@' + host_id
@@ -34,24 +34,14 @@ def make_instana_payload(payload, verbose):
     else:
         odi_fields = odi
     data = {
-        'availabilityZone': sysplex_name,
+        'availabilityZone': availability_zone,
         table_description: odi_fields
     }
     instana_payload = {
-        'plugins': [
-            {
-                'name': 'com.instana.plugin.ibmapmproxy',
-                'entityId': 'ibm-apmproxy',
-                'data': {
-                    'nested_payloads': {
-                        'sensor_name': sensor_name,
-                        'host_id': host_id,
-                        'entity_id': entity_id,
-                        'data': data
-                    }
-                }
-            }
-        ]
+        'sensor_name': sensor_name,
+        'host_id': host_id,
+        'entity_id': entity_id,
+        'data': data
     }
     if verbose:
         print(json.dumps(instana_payload, indent=4))
@@ -66,6 +56,7 @@ def run_proxy_thread(conn, hostname, port, verbose):
             instana_payload = make_instana_payload(payload, verbose)
             if instana_payload:
                 target.send((instana_payload + '\n').encode())
+
 
 def main():
     global config
@@ -103,8 +94,8 @@ def main():
         while True:
             conn, address = serv.accept()
             # use threads to handle multiple connections
-            threading\
-                .Thread(target=run_proxy_thread(conn, args.target_hostname, args.target_port, args.verbose))\
+            threading \
+                .Thread(target=run_proxy_thread(conn, args.target_hostname, args.target_port, args.verbose)) \
                 .start()
 
 
