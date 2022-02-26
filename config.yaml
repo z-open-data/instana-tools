@@ -2,7 +2,8 @@ products:
   km5:
     sensor_type: os
     entity_type: mvs
-    hostname: smf_id
+    hostname: smf_id  # payload field for hostname
+    availability_zone: sysplex_name  # payload field for availabilityZone
     tables:
       syscpuutil:
         description: System_CPU_Utilization
