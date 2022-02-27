@@ -1,6 +1,9 @@
 ## Installation
 Requires Python3.8
 
+### Dependencies
+This package depends on `PyYaml`. Install using the Python package manager `pip install PyYAML`
+
 ## Usage
 ```
 usage: python3.8 odp-instana-proxy [-h] --hostname HOSTNAME [--config CONFIG] --port PORT --target-hostname TARGET_HOSTNAME --target-port TARGET_PORT [--verbose]
