@@ -13,26 +13,23 @@ def is_supported(product_code, table_name):
 
 
 def make_instana_payload(json_payload, verbose):
-    odp_struct = json.loads(json_payload)
-    product_code = odp_struct['product_code']
-    table_name = odp_struct['table_name']
+    odp_payload = json.loads(json_payload)
+    product_code = odp_payload['product_code']
+    table_name = odp_payload['table_name']
     if not is_supported(product_code, table_name):
         return None
     product = config['products'][product_code]
     table = product['tables'][table_name]
     sensor_type = product['sensor_type']
     entity_type = product['entity_type']
-    availability_zone = odp_struct.get(product.get('availability_zone')) or "**UNKNOWN**"
+    availability_zone = odp_payload.get(product.get('availability_zone')) or "**UNKNOWN**"
     sensor_name = "com.instana.plugin.ibmz." + sensor_type
-    host_id = odp_struct[product['hostname']].lower()
+    host_id = odp_payload[product['hostname']].lower()
     entity_id = entity_type + '@' + host_id
     table_description = table['description']
-    # if fields have been specified only include those fields
     fields = table.get('fields')
-    if fields:
-        odi_fields = {k: odp_struct[k] for k in fields}
-    else:
-        odi_fields = odp_struct
+    # if fields have been specified only include those fields
+    odi_fields = {k: odp_payload[k] for k in fields} if fields else odp_payload
     data = {
         'availabilityZone': availability_zone,
         table_description: odi_fields
