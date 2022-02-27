@@ -19,5 +19,5 @@ optional arguments:
                         The target hostname
   --target-port TARGET_PORT
                         The target port
-  --verbose             Print verbose output
+  --verbose             Print verbose output such as pretty printed JSON
 ```
