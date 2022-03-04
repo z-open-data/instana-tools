@@ -72,11 +72,11 @@ def main():
                         help='The server port')
     parser.add_argument('--target-hostname',
                         required=True,
-                        help='The server hostname')
+                        help='The target server hostname')
     parser.add_argument('--target-port',
                         type=int,
                         required=True,
-                        help='The server port')
+                        help='The target server port')
     parser.add_argument('--verbose',
                         action='store_true',
                         help='Print verbose output')
